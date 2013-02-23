@@ -43,9 +43,9 @@ Meanwhile, your search index is adding rows by the minute as your database grows
 
 #### Six months later... 
 
-...your app suddenly crashes.  No data updates can happen -- database transactions are timing out like crazy.  You frantically turn up logging and throw your full effort at debugging.  Since it's a transaction timeout, you focus on the database.
+...your app suddenly crashes, hard.  No data updates are happening -- database transactions are timing out like crazy.  You frantically turn up logging and throw your full effort at debugging.  Since it's a transaction timeout, you focus on the database.
 
-You've got your ops team, your DBAs, and your network team frantically checking the database to see what could be causing the issue.
+You've got your ops team, your DBAs, and your network team frantically checking to see what could be causing the issue.
 
 After hours of fruitless troubleshooting, you finally remember the bug that you ignored.  Now you see that the "random search problem" wasn't random at all.
 
@@ -67,13 +67,15 @@ Then, suddenly, it hits you like a ton of bricks:
 
 ##### _Tbe most popular Grails plugin for searching -- Searchable -- is great for a quick solution.  But it is not designed for scaling to multiple instances very well._
 
-You immediately start work porting the app to a different search engine technology -- for example, Apache Solr or Elastic Search -- and cursing the name of Searchable.
+You start work porting the app to a different search technology -- like [Apache Solr](http://lucene.apache.org/solr/) or [Elastic Search](http://www.elasticsearch.org) -- and writing a [blog post](http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/) to help prevent others from making the same mistake.
 
-### The Moral of the Story
+### What did you learn?
 
  1. Much like high school kids, the popular plugins are not necessarily the best plugins. 
 
  2. _Pay attention to what libraries are used by your dependencies before you choose them_ or you may end up with dead-end software in your application.
+ 
+ 3. The simplest solution may not be the best solution.
  
 
  
