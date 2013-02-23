@@ -1,9 +1,8 @@
 ---
 layout: post
 title: "Your iPad app sucks."
-description: ""
-category: 
-tags: [rant, iOS]
+description: "Why you should not bombard your precious users with advertisements for subpar iPad apps."
+categories: [rant, iOS] 
 ---
 
 Yeah. It's harsh, but you know it's true.  Your iPad app probably sucks -- *when compared to your web site.*  
