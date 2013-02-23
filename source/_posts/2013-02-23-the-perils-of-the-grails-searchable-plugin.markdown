@@ -18,7 +18,7 @@ It's got a lot going for it:
 Before I go further: know that I really like the Searchable plugin.  It's a great way to get search in a smaller application.
 <!--more-->
 
-### Adding Searchable to a Project
+### Adding Searchable to a Project: A dramatization
 You're working on a project.  The end of the lap is near, and your task is to implement a simple search screen.  
 
 You find Searchable and decide to try it out.
@@ -47,17 +47,13 @@ Meanwhile, your search index is adding rows by the minute as your database grows
 
 You've got your ops team, your DBAs, and your network team frantically checking the database to see what could be causing the issue.
 
-Little do they know... that your old friend, the random search index problem from QA, wasn't random at all.
+After hours of fruitless troubleshooting, you finally remember the bug that you ignored.  Now you see that the "random search problem" wasn't random at all.
 
-#### 24 tired hours later....
-
-...you finally discover that your trusty search index has locked itself and requires a rebuild and restart.  
-
-Your misuse of Searchable was the cause of the problem -- _you're not supposed to store a Compass index on an NFS mount_. You're frantically trying to share the index in other ways.  In your research, you discovered some troubling facts:
+Further research reveals that _storing the Compass index on an NFS mount_ was the cause of the problem. It's in the documentation.  While researching, you find:
 
 ##### _[Compass](http://www.compass-project.org), a core library used by Searchable, is no longer maintained._
 
-Yes, that's right.  You realize with shock that the most popular search plugin for Grails uses an obsolete library to map GORM objects to it's Lucene search index.
+You realize with surprise that the most popular search plugin for Grails uses an obsolete library to map GORM objects to it's Lucene search index.
 
 The author has abandoned Compass and created [Elastic Search](http://www.elasticsearch.org), which, now that you look at it, looks to be a much better solution.
   
@@ -78,5 +74,6 @@ You immediately start work porting the app to a different search engine technolo
  1. Much like high school kids, the popular plugins are not necessarily the best plugins. 
 
  2. _Pay attention to what libraries are used by your dependencies before you choose them_ or you may end up with dead-end software in your application.
+ 
 
  
