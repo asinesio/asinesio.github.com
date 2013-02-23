@@ -3,8 +3,7 @@ layout: post
 title: "Switching Grails Versions"
 tagline: "Another annoyance out of the way."
 description: "A small script to help Grails developers switch versions."
-category: 
-tags: [firstpost, grails, script]
+categories: [grails, script]
 ---
 
 This is my #firstpost, so I thought I'd share a useful Grails shell script.
