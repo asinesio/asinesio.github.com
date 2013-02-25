@@ -1,7 +1,6 @@
 ---
 layout: page
 title: "About Me"
-date: 2013-02-23 12:19
 comments: false
 sharing: true
 footer: true
@@ -22,7 +21,7 @@ Through my company, [Precognitive Research](http://precognitiveresearch.com), I'
 
 It offers the ability to render a polygon of arbitrary points by triangulating them and filling them with a texture.  
 
-PRKit sprung out of a game prototype where rendering dynamic terrain was critical.  It's been included in several [projects](http://www.pooperpig.com/coding/scrolling-textures-in-cocos2d/).
+PRKit sprung out of a game prototype where rendering dynamic terrain was critical.  It's been included in several [projects](http://www.pooperpig.com/coding/scrolling-textures-in-cocos2d/) and has been mentioned in a tutorial on [Ray Wenderlich's blog](http://www.raywenderlich.com/14302/how-to-make-a-game-like-fruit-ninja-with-box2d-and-cocos2d-part-1).
 
 ### Spectral Flux
 
