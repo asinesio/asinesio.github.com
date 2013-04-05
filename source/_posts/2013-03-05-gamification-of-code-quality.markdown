@@ -16,6 +16,8 @@ After a few laps on a recent project, I noticed that despite our "test-driven de
 
 After prodding our developers and "vowing to get better", it wasn't happening.  So I came up with a new plan.
 
+<!--more-->
+
 ### The Test Coverage Game
 
 We implemented a friendly game on the team to improve test coverage.
@@ -30,7 +32,7 @@ We focused the scoring and made it simple:
 
 * 1 point for covering a line that was not previously covered by a unit test.
 * 3 points for covering a method that was not previously covered by a unit test.
-* 5 points for covering a class that was not previously covered by a unit test.
+* < 50% is an F, 50% and higher is a C, 70% is a B, and 80% is an A.
 
 #### Tools
 
@@ -49,4 +51,6 @@ Universally, it was welcomed by the team, and after a month, test coverage was a
 
 Lines of code is a bad way to judge a developer's effectiveness: removing lines of code is often a way to improve software quality.  So, a better scoring system would track percentages of the project that are covered by tests rather than lines of code.
 
-Due to the success of the code coverage game, we decided to roll out a percentage-based scoring system to all projects at the company.
+The key was *public visibility*. Developers strove to contribute tests when they knew their work was visible.
+
+Due to the success of the code coverage game, we decided to roll out a percentage-based scoring system across all software.  Give it a try, if you haven't yet -- something like it may be more effective than you think.
