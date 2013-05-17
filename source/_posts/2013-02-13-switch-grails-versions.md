@@ -8,9 +8,12 @@ categories: [grails, script]
 
 This is my #firstpost, so I thought I'd share a useful Grails shell script.
 
+(**Update: you really should use [gvm](http://gvmtool.net) instead of this script.** It is a similar idea but also handles installation, path setup, and other tools like Gradle, vert.x, and Griffon.)
+
 One of the annoying things about using [Grails](http://www.grails.org) from the command line is dealing with multiple Grails versions on your system.
 
 This isn't an issue if you're using an IDE that can refer to a Grails version outside of your $PATH.  However, I find that using a command-line Grails in combination with an IDE like STS or GGTS is the most productive way for me to write Grails code.
+
 
 <!--more-->
 
