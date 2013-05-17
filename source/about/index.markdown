@@ -28,9 +28,10 @@ PRKit sprung out of a game prototype where rendering dynamic terrain was critica
 [Spectral Flux](http://github.com/asinesio/SpectralFlux) is a beat detection library for iOS.  I'm still working on cleaning it up and getting it to work in a general case, but it should be useful reference for anyone looking for how to analyze songs in a user's iPod library.
 
 ##This Site
-This site is built using the wonderful [Octopress](http://octopress.org) and hosted by [GitHub](http://github.com).
+This site is built using the wonderful [Octopress](http://octopress.org) and it's hosted by [GitHub](http://github.com).
 
 ##Contact Me
-
+* ADN: [@sinesio](http://app.net/sinesio)
+* GitHub: [@asinesio](http://github.com/asinesio)
 * Twitter: [@asinesio](http://twitter.com/asinesio)
-* Email: asinesio (at) Google's free mail service
+* Email: [andy@sines.io](mailto:andy@sines.io)
