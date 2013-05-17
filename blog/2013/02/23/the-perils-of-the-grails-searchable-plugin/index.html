@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The Perils of the Grails Searchable Plugin - Andy Sinesio</title>
+  <meta name="author" content="Andy Sinesio">
+
+  
+  <meta name="description" content="The Grails Searchable Plugin is generally where developers end up when they are looking to add full-text searching to their Grails application. It&# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/">
+  <link rel="meta" type="application/rdf+xml" title="FOAF" href="/foaf.rdf" />
+  <link href="/favicon.png?v=2" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Andy Sinesio" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38496623-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Andy Sinesio</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:asinesio.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">The Perils of the Grails Searchable Plugin</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-23T00:05:00-06:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The <a href="http://grails.org/plugin/searchable">Grails Searchable Plugin</a> is generally where developers end up when they are looking to add full-text searching to their Grails application.</p>
+
+<p>It&#8217;s got a lot going for it:</p>
+
+<ul>
+<li>Simple, embedded Lucene index with minimal initial setup.</li>
+<li>Automatic GORM mirroring of changes.</li>
+<li>Widely used; according to Grails.org, it&#8217;s installed in almost <em>7% of Grails projects</em>.</li>
+<li>Fast and simple, it works out of the box.</li>
+</ul>
+
+
+<p>Before I go further: know that I really like the Searchable plugin.  It&#8217;s a great way to get search in a smaller application.</p>
+
+<!--more-->
+
+
+<h3>Adding Searchable to a Project: A dramatization</h3>
+
+<p>You&#8217;re working on a project.  The end of the lap is near, and your task is to implement a simple search screen.</p>
+
+<p>You find Searchable and decide to try it out.</p>
+
+<p>Installation&#8217;s easy. <code>grails install-plugin searchable</code> or <code>:searchable:0.6.4</code> in your BuildConfig.  Tweak some settings, and within an hour, you&#8217;ve got an embedded full text search engine.</p>
+
+<p>&#8220;Man, that&#8217;s cool,&#8221; you think to yourself.  &#8220;And so easy to use. I love it.&#8221;</p>
+
+<p>You proudly show it off to your project sponsors: &#8220;Look! Embedded Google, right in the app!  Look fast it is!&#8221;</p>
+
+<p>Everyone loves it. Your manager thinks you&#8217;re a rock star.  Life is great.</p>
+
+<p>Your QA team notices some searches randomly failing while testing the app, but you can&#8217;t reproduce it.  You research it for hours, can&#8217;t determine the cause, and eventually blame some random piece of infrastructure for your concerns.</p>
+
+<p>&#8220;I know the network guys were scheduled to do that switch firmware upgrade, that must have been it.&#8221;</p>
+
+<h4>Then, Production Deployment.</h4>
+
+<p>Your users are loving the full text search. Your app is a success and everyone pats you on the back.</p>
+
+<p>Meanwhile, your search index is adding rows by the minute as your database grows.  The random failure from QA is lurking there, in the shadows, planning the perfect moment to jump up and bite you.</p>
+
+<h4>Six months later&#8230;</h4>
+
+<p>&#8230;your app suddenly crashes, hard.  No data updates are happening &#8211; database transactions are timing out like crazy.  You frantically turn up logging and throw your full effort at debugging.  Since it&#8217;s a transaction timeout, you focus on the database.</p>
+
+<p>You&#8217;ve got your ops team, your DBAs, and your network team frantically checking to see what could be causing the issue.</p>
+
+<p>After hours of fruitless troubleshooting, you finally remember the bug that you ignored.  Now you see that the &#8220;random search problem&#8221; wasn&#8217;t random at all.</p>
+
+<p>Further research reveals that <em>storing the Compass index on an NFS mount</em> was the cause of the problem. It&#8217;s in the documentation.  While researching, you find:</p>
+
+<h5><em><a href="http://www.compass-project.org">Compass</a>, a core library used by Searchable, is no longer maintained.</em></h5>
+
+<p>You realize with surprise that the most popular search plugin for Grails uses an obsolete library to map GORM objects to it&#8217;s Lucene search index.</p>
+
+<p>The author has abandoned Compass and created <a href="http://www.elasticsearch.org">Elastic Search</a>, which, now that you look at it, looks to be a much better solution.</p>
+
+<h5><em>Nobody uses Searchable with indexes that are shared and mirrored across multiple app instances.</em></h5>
+
+<p>You weren&#8217;t a total idiot when you built your app &#8211; you decided to launch several Tomcat instances and load balance them.  In order for updates made in one node to show up in the others, you enabled mirroring in all nodes.</p>
+
+<p>What you didn&#8217;t realize is that in order to share the index files, you had to use something like an NFS mount to share them among instances.</p>
+
+<p>Then, suddenly, it hits you like a ton of bricks:</p>
+
+<h5><em>Tbe most popular Grails plugin for searching &#8211; Searchable &#8211; is great for a quick solution.  But it is not designed for scaling to multiple instances very well.</em></h5>
+
+<p>You start work porting the app to a different search technology &#8211; like <a href="http://lucene.apache.org/solr/">Apache Solr</a> or <a href="http://www.elasticsearch.org">Elastic Search</a> &#8211; and writing a <a href="http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/">blog post</a> to help prevent others from making the same mistake.</p>
+
+<h3>What did you learn?</h3>
+
+<ol>
+<li><p>Much like high school kids, the popular plugins are not necessarily the best plugins.</p></li>
+<li><p><em>Pay attention to what libraries are used by your dependencies before you choose them</em> or you may end up with dead-end software in your application.</p></li>
+<li><p>The simplest solution may not be the best solution.</p></li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Andy Sinesio</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-23T00:05:00-06:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/grails/'>grails</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/" data-via="asinesio" data-counturl="http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd/" title="Previous Post: Powerful Admin Interfaces with Graphite and StatsD">&laquo; Powerful Admin Interfaces with Graphite and StatsD</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/26/a-software-update-is-required/" title="Next Post: A software update is required.">A software update is required. &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse/">Blink is not the coming of the apocalypse</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/05/gamification-of-code-quality/">Gamification of Code Quality</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/26/a-software-update-is-required/">A software update is required.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/">The Perils of the Grails Searchable Plugin</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd/">Powerful Admin Interfaces with Graphite and StatsD</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/asinesio">@asinesio</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'asinesio',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("asinesio", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/asinesio" class="twitter-follow-button" data-show-count="false">Follow @asinesio</a>
+  
+</section>
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/109646729091839976697?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Andy Sinesio -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

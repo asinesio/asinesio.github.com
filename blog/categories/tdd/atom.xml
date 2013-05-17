@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: TDD | Andy Sinesio]]></title>
+  <link href="http://asinesio.github.com/blog/categories/tdd/atom.xml" rel="self"/>
+  <link href="http://asinesio.github.com/"/>
+  <updated>2013-05-17T00:42:27-05:00</updated>
+  <id>http://asinesio.github.com/</id>
+  <author>
+    <name><![CDATA[Andy Sinesio]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Gamification of Code Quality]]></title>
+    <link href="http://asinesio.github.com/blog/2013/03/05/gamification-of-code-quality/"/>
+    <updated>2013-03-05T20:35:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/03/05/gamification-of-code-quality</id>
+    <content type="html"><![CDATA[<p>Quality is one of the most difficult things to define.  There have been <a href="http://en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance">entire books written</a> about the topic.</p>
+
+<p>Unsurprisingly, it's also difficult to define when it comes to software.  However, most developers will readily agree that writing <a href="http://en.wikipedia.org/wiki/Unit_testing">unit tests</a> and practicing <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a> are tools for writing higher quality software.</p>
+
+<h3>Tests are great, why aren't you writing them?</h3>
+
+<p>After a few laps on a recent project, I noticed that despite our "test-driven development" goals, our test coverage was lacking.  We were hoving around 50% lines/50% methods complete.</p>
+
+<p>After prodding our developers and "vowing to get better", it wasn't happening.  So I came up with a new plan.</p>
+
+<!--more-->
+
+
+<h3>The Test Coverage Game</h3>
+
+<p>We implemented a friendly game on the team to improve test coverage.</p>
+
+<ol>
+<li><p>Invent a scoring system to award "quality points" to developers.</p></li>
+<li><p>Display scores in public locations, but keep it lighthearted.</p></li>
+<li><p>A program collates the results and awards points to the team members after each build.</p></li>
+</ol>
+
+
+<p>We focused the scoring and made it simple:</p>
+
+<ul>
+<li>1 point for covering a line that was not previously covered by a unit test.</li>
+<li>3 points for covering a method that was not previously covered by a unit test.</li>
+<li>&lt; 50% is an F, 50% and higher is a C, 70% is a B, and 80% is an A.</li>
+</ul>
+
+
+<h4>Tools</h4>
+
+<ul>
+<li><a href="http://cobertura.sourceforge.net">Cobertura</a> to track code coverage.</li>
+<li><a href="http://www.hudson-ci.org">Hudson/Jenkins</a> for builds.</li>
+<li>A custom script to parse the coverage results (coming soon).</li>
+<li>A <em>whiteboard</em> for posting scores.</li>
+</ul>
+
+
+<h4>Does it work?</h4>
+
+<p>After one two-week lap, code coverage jumped from 50% to 60%. It continued to climb as developers strove to contribute and wanted their contributions to be visible to the public.</p>
+
+<p>Universally, it was welcomed by the team, and after a month, test coverage was at 70% -- and developers enjoyed getting there.  It had a successful, nearly bug free launch, too.</p>
+
+<h3>Percentage-based scoring</h3>
+
+<p>Lines of code is a bad way to judge a developer's effectiveness: removing lines of code is often a way to improve software quality.  So, a better scoring system would track percentages of the project that are covered by tests rather than lines of code.</p>
+
+<p>The key was <em>public visibility</em>. Developers strove to contribute tests when they knew their work was visible.</p>
+
+<p>Due to the success of the code coverage game, we decided to roll out a percentage-based scoring system across all software.  Give it a try, if you haven't yet -- something like it may be more effective than you think.</p>
+]]></content>
+  </entry>
+  
+</feed>

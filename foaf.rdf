@@ -1,0 +1,28 @@
+<rdf:RDF
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
+      xmlns:admin="http://webns.net/mvcb/">
+<foaf:PersonalProfileDocument rdf:about="">
+  <foaf:maker rdf:resource="#me"/>
+  <foaf:primaryTopic rdf:resource="#me"/>
+  <admin:generatorAgent rdf:resource="http://www.ldodds.com/foaf/foaf-a-matic"/>
+  <admin:errorReportsTo rdf:resource="mailto:leigh@ldodds.com"/>
+</foaf:PersonalProfileDocument>
+<foaf:Person rdf:ID="me">
+<foaf:name>Andrew Sinesio</foaf:name>
+<foaf:title>Mr</foaf:title>
+<foaf:givenname>Andrew</foaf:givenname>
+<foaf:family_name>Sinesio</foaf:family_name>
+<foaf:nick>Andy</foaf:nick>
+<foaf:mbox_sha1sum>bcfb0828dd1c71963ec803638dfa6e9be6523cfc</foaf:mbox_sha1sum>
+<foaf:homepage rdf:resource="http://asinesio.github.io"/>
+<foaf:depiction rdf:resource="http://www.gravatar.com/avatar/439fc2841cff7917f1056a276dbf789f.png"/>
+<foaf:workplaceHomepage rdf:resource="http://precognitiveresearch.com"/>
+<foaf:schoolHomepage rdf:resource="http://stcloudstate.edu"/>
+<foaf:knows>
+<foaf:Person>
+<foaf:name>Brian Sletten</foaf:name>
+<foaf:mbox_sha1sum>6de5a032a9459ec947c8f54b3e5f54a6e60b7a29</foaf:mbox_sha1sum>
+<rdfs:seeAlso rdf:resource="http://w3id.org/people/bsletten"/></foaf:Person></foaf:knows></foaf:Person>
+</rdf:RDF>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: graphite | Andy Sinesio]]></title>
+  <link href="http://asinesio.github.com/blog/categories/graphite/atom.xml" rel="self"/>
+  <link href="http://asinesio.github.com/"/>
+  <updated>2013-05-17T00:42:27-05:00</updated>
+  <id>http://asinesio.github.com/</id>
+  <author>
+    <name><![CDATA[Andy Sinesio]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Powerful Admin Interfaces with Graphite and StatsD]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd/"/>
+    <updated>2013-02-19T22:02:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd</id>
+    <content type="html"><![CDATA[<p><a href="http://graphite.wikidot.com">Graphite</a> paired with <a href="http://github.com/etsy/statsd">StatsD</a> is a simple, powerful way to get dramatic insight into your application's behavior.</p>
+
+<p>The seminal <a href="http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/">Etsy blog post</a> on this subject explains it well:</p>
+
+<p><blockquote><p><br/><br/>If Engineering at Etsy has a religion, it’s the Church of Graphs. If it moves, we track it. Sometimes we’ll draw a graph of something that isn’t moving yet, just in case it decides to make a run for it.</p><footer><strong>Ian Malpass, Etsy</strong> <cite><a href='http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/'>Measure Anything, Measure Everything</a></cite></footer></blockquote></p>
+
+<h4>With Graphite, you get:</h4>
+
+<ul>
+<li>Beautiful, near real-time graphs of metrics.</li>
+<li>A simply awesome API to embed graphs and source data in nearly any other system.</li>
+</ul>
+
+
+<h4>Combined with StatsD:</h4>
+
+<ul>
+<li>Fire-and-forget (UDP-based) metric data emission and aggregation.</li>
+<li>Metrics that make sense.</li>
+<li>Brain dead simple API that works in any language, from Groovy to shell scripts.</li>
+</ul>
+
+
+<h3>Knowledge is Power</h3>
+
+<p>What are the first items that get cut from most software projects?  <em>Effective support and administrative tools.</em></p>
+
+<p>Without easy tools at your disposal, how many times have you written some code and thought:</p>
+
+<p><blockquote><p>"What do I do if something goes wrong? Hmm, that's hard. I guess I'll just log the error for now."</p></blockquote></p>
+
+<p>I'm certainly just as guilty of this transgression as anyone else.  Why would I waste valuable time writing a screen to manage the failures -- something that may never be used?</p>
+
+<!--more-->
+
+
+<h3>A Simple Answer</h3>
+
+<p>What if the code was this simple:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="n">StatsDClient</span> <span class="n">statsdClient</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">boolean</span> <span class="n">doLogin</span><span class="o">(</span><span class="n">String</span> <span class="n">user</span><span class="o">,</span> <span class="n">String</span> <span class="n">pass</span><span class="o">)</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="n">loginService</span><span class="o">.</span><span class="na">doLogin</span><span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">pass</span><span class="o">);</span>
+</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">statsdClient</span><span class="o">.</span><span class="na">incrementCounter</span><span class="o">(</span><span class="s">&quot;login.success&quot;</span><span class="o">);</span>  <span class="c1">// Nice.</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&quot;User &quot;</span> <span class="o">+</span> <span class="n">user</span> <span class="o">+</span> <span class="s">&quot; failed login.&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">statsdClient</span><span class="o">.</span><span class="na">incrementCounter</span><span class="o">(</span><span class="s">&quot;login.failed&quot;</span><span class="o">);</span>  <span class="c1">// Nefarious attempt? Not sure.</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Two additional lines of code (if you don't count injecting the <code>statsdClient</code>) and all of a sudden you've got a incredibly useful graph like Etsy's:</p>
+
+<p><img src="http://etsycodeascraft.files.wordpress.com/2011/02/logins2.png?w=500&amp;h=300" alt="Graph showing login failures" /></p>
+
+<p>When it's that easy, <em>developers will use it by default.</em>  You won't have to include tracking these things in project estimates, steering committees, and testing plans.  It will <em>just happen</em>.</p>
+
+<h3>Show off your graphs. Publicly.</h3>
+
+<p>Because Graphite has a <a href="https://graphite.readthedocs.org/en/latest/render_api.html">fantastic API</a>, all you need to do in order to show the number of failed logins in your admin interface is include a URL to Graphite's render API in an <code>&lt;img&gt;</code> tag in your Admin interface.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://graphite.mycompany.com/render?target=stats.counts.login.success&amp;from=-6hours&amp;format=png&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>With three lines of code, you've created a real time graph in your admin interface that shows login activity.</p>
+
+<p>Some other places that are great to show a graph:</p>
+
+<ul>
+<li>A large TV in your workspace.</li>
+<li>The app's Wiki page and documentation.</li>
+<li>In an email to team members.</li>
+</ul>
+
+
+<p>When a key graph is shared like this, the entire team -- developers, system admins, and support engineers -- will use it.  After a time, they will find it indespensable -- because it will make them more productive.</p>
+]]></content>
+  </entry>
+  
+</feed>

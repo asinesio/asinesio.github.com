@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: script | Andy Sinesio]]></title>
+  <link href="http://asinesio.github.com/blog/categories/script/atom.xml" rel="self"/>
+  <link href="http://asinesio.github.com/"/>
+  <updated>2013-05-17T00:42:27-05:00</updated>
+  <id>http://asinesio.github.com/</id>
+  <author>
+    <name><![CDATA[Andy Sinesio]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Switching Grails Versions]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/13/switch-grails-versions/"/>
+    <updated>2013-02-13T00:00:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/13/switch-grails-versions</id>
+    <content type="html"><![CDATA[<p>This is my #firstpost, so I thought I'd share a useful Grails shell script.</p>
+
+<p>(<strong>Update: you really should use <a href="http://gvmtool.net">gvm</a> instead of this script.</strong> It is a similar idea but also handles installation, path setup, and other tools like Gradle, vert.x, and Griffon.)</p>
+
+<p>One of the annoying things about using <a href="http://www.grails.org">Grails</a> from the command line is dealing with multiple Grails versions on your system.</p>
+
+<p>This isn't an issue if you're using an IDE that can refer to a Grails version outside of your $PATH.  However, I find that using a command-line Grails in combination with an IDE like STS or GGTS is the most productive way for me to write Grails code.</p>
+
+<!--more-->
+
+
+<p>If you do nothing special, you'll find yourself adding the following to your <code>~/.bash_profile</code>  to make Grails work from a command line:</p>
+
+<pre><code>GRAILS_HOME = /Users/asinesio/dev/tools/grails-2.1.0
+export PATH=$PATH:$GRAILS_HOME/bin
+</code></pre>
+
+<p>Of course, you now have to change your <code>.bash_profile</code> every time you switch projects. Fail.</p>
+
+<p>The obvious solution is a simple shell script that leverages the following ideas:</p>
+
+<ol>
+<li>Use a symbolic link from something like <code>/Users/asinesio/dev/tools/grails</code> to the actual Grails version you want to use.</li>
+<li>Set this link as <code>GRAILS_HOME</code>.</li>
+<li>Add <code>GRAILS_HOME/bin</code> to your <code>PATH</code>.</li>
+<li>Use a <a href="https://gist.github.com/asinesio/4946855">shell script</a> on your path to automatically change the symbolic link to point to the correct Grails version.</li>
+</ol>
+
+
+<p>Once you've done that, changing is as easy as running: <code>grails-switch-version.sh 2.2.0</code></p>
+
+<p><div><script src='https://gist.github.com/4946855.js?file=grails-switch-version.sh'></script>
+<noscript><pre><code>#!/bin/bash
+# This script will switch the active version of Grails.  Tested on Mac OS X 10.7 and 10.8. Read install directions first!
+# 
+# This software is copyright (c) 2012 Andy Sinesio. It's distributed under the MIT License: http://opensource.org/licenses/mit-license.php
+# 
+# Installation steps:
+#    - Make sure GRAILS_HOME is pointing at a symbolic link that points one of your actual grails installations.
+#       1) ln -s ~/dev/tools/grails-2.2.0 ~/dev/tools/grails
+#       2) Set GRAILS_HOME in ~/.bash_profile to be the symlink, e.g. ~/dev/tools/grails
+#    - Place this file in any directory (preferably on your PATH, e.g. ~/bin) with execute permissions
+#    - Change GRAILS_INSTALL_DIRS to the folder on your computer that has all of your downloaded Grails installs, if needed.
+#
+# Usage:  grails-switch-version.sh 2.1.0
+
+GRAILS_INSTALL_DIRS=&quot;$HOME/dev/tools&quot;
+GRAILS_DIR_PREFIX=&quot;grails-&quot;
+NEW_GRAILS_DIR=&quot;$GRAILS_INSTALL_DIRS/$GRAILS_DIR_PREFIX$1&quot;
+
+if [ -L &quot;$GRAILS_HOME&quot; ] &amp;&amp; [ -d &quot;$NEW_GRAILS_DIR&quot; ]; then
+        echo &quot;Removing existing symlink version of Grails at $GRAILS_HOME, linking to $NEW_GRAILS_DIR&quot;
+        rm $GRAILS_HOME
+        ln -s $NEW_GRAILS_DIR $GRAILS_HOME
+        $GRAILS_HOME/bin/grails --version
+else
+        echo &quot;Usage: grails-switch-version.sh &lt;&lt;VERSION_NUMBER&gt;&gt;, e.g. grails-switch-version.sh 2.2.0&quot;
+        echo &quot;Make sure that GRAILS_HOME ($GRAILS_HOME) is a symbolic link and grails versions are extracted in $GRAILS_INSTALL_DIRS&quot;
+fi</code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+</feed>

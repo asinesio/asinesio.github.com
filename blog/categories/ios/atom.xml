@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | Andy Sinesio]]></title>
+  <link href="http://asinesio.github.com/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://asinesio.github.com/"/>
+  <updated>2013-05-17T00:42:27-05:00</updated>
+  <id>http://asinesio.github.com/</id>
+  <author>
+    <name><![CDATA[Andy Sinesio]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Your iPad app sucks.]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/15/your-ipad-app-sucks/"/>
+    <updated>2013-02-15T00:00:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/15/your-ipad-app-sucks</id>
+    <content type="html"><![CDATA[<p>Yeah. It's harsh, but you know it's true.  Your iPad app probably sucks -- <em>when compared to your web site.</em></p>
+
+<p>Web browsing on an iPad is a blissful, unique, and sublime experience.  It is, in my estimation, the single greatest advancement in web browsing since the advent of <code>XMLHttpRequest</code>.</p>
+
+<p>On an iPad:</p>
+
+<ul>
+<li>Want to scroll? Grab the page and slide it over <em>like a piece of paper.</em></li>
+<li>Is the text too small or too large?  Stretch or pinch it <em>like silly putty.</em></li>
+<li>Want to do something special with a word on the page?  <em>Touch and hold.</em></li>
+</ul>
+
+
+<p>These interactions are so brilliant and obvious that it makes browsing almost any website -- even this one -- <em>fun</em>.</p>
+
+<!--more-->
+
+
+<p>Companies know this fact.  And they also know that:</p>
+
+<ul>
+<li>Visitors are <em>precious</em>.  The company has spent millions of dollars on their fancy web site to attract users like you.</li>
+<li>iPads are used for nearly <a href="http://appleinsider.com/articles/12/09/27/apple-ipad-dominates-tablet-based-web-browsing-with-98-share-report-says">all tablet web browsing</a>.</li>
+<li>iPad users are great customers -- they're generally <a href="http://www.nbcnews.com/technology/technolog/ipad-owners-trending-older-wealthier-now-157765">wealthy</a> and willing to spend money.</li>
+<li>Pop-up advertisements <a href="http://liesdamnedliesstatistics.com/2009/07/consumers-annoyed-with-internet-ads.html">annoy the hell</a> out of customers.</li>
+<li>First impressions are everything.</li>
+<li>The iPad app isn't as functional as the full-fledged web site.</li>
+</ul>
+
+
+<p>Knowing this, companies still somehow decide to show their precious visitors this monstrosity (source: <a href="http://www.xkcd.com">XKCD</a>)</p>
+
+<p><img src="http://imgs.xkcd.com/comics/app.png" alt="XKCD coming showing a popover ad for an iPad app" /></p>
+
+<p>Maybe their iPad app is wonderful.  I'll never know, though, because that ad -- and by extension, the app -- sucks.</p>
+]]></content>
+  </entry>
+  
+</feed>

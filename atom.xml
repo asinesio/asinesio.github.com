@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Andy Sinesio]]></title>
+  <link href="http://asinesio.github.com/atom.xml" rel="self"/>
+  <link href="http://asinesio.github.com/"/>
+  <updated>2013-05-17T00:42:27-05:00</updated>
+  <id>http://asinesio.github.com/</id>
+  <author>
+    <name><![CDATA[Andy Sinesio]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Blink is not the coming of the apocalypse]]></title>
+    <link href="http://asinesio.github.com/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse/"/>
+    <updated>2013-04-05T00:54:00-05:00</updated>
+    <id>http://asinesio.github.com/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse</id>
+    <content type="html"><![CDATA[<p>Since Google <a href="http://blog.chromium.org/2013/04/blink-rendering-engine-for-chromium.html">announced they were forking WebKit</a>, I&#8217;ve seen nothing but <a href="http://prng.net/blink-faq.html">universally negative reactions</a>.</p>
+
+<p>The primary points seem to be that Blink is bad because:</p>
+
+<h4>&#8220;Developers will now have another major browser rendering engine that they will need to test.&#8221;</h4>
+
+<p>This is just not true. If you&#8217;re building quality web software, you are already testing your site on both Chrome and Safari (Mobile and desktop).</p>
+
+<p>A <a href="http://en.wikipedia.org/wiki/Internet_Explorer_6">web monoculture</a> is bad for everyone.  A healthy web ecosystem consisting of equal parts Chrome, Safari, Firefox, Opera, and Internet Explorer means that the users will have a choice, because all web apps will generally need to work with all browsers.</p>
+
+<h4>&#8220;WebKit and Blink will diverge and re-implement each other&#8217;s features, thus slowing progress.&#8221;</h4>
+
+<p>Google already <a href="https://news.ycombinator.com/item?id=5490242">wasn&#8217;t contributing</a> much of their code back to WebKit.  The announcement of Blink is truly just formalizing what was already happening.</p>
+
+<h4>&#8220;Google is going to use this to invade my privacy and track me across the Web.&#8221;</h4>
+
+<p>Yes. They were doing that anyway, and they haven&#8217;t exactly had a great <a href="http://www.pcmag.com/article2/0,2817,2411916,00.asp">track record</a> of protecting your privacy. If you were concerned about this, you wouldn&#8217;t be using Chrome anyway.</p>
+
+<p>Think about it; Google forked WebKit for the same reason Apple replaced Google Maps - Google wants to control their own destiny.</p>
+
+<p>Blink is not the coming of the web browser apocalypse (but it does have a terrible name).</p>
+
+<p>The apocalypse happened when Internet Explorer crushed Netscape. We&#8217;ve recovered from that, and we&#8217;re never going back.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gamification of Code Quality]]></title>
+    <link href="http://asinesio.github.com/blog/2013/03/05/gamification-of-code-quality/"/>
+    <updated>2013-03-05T20:35:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/03/05/gamification-of-code-quality</id>
+    <content type="html"><![CDATA[<p>Quality is one of the most difficult things to define.  There have been <a href="http://en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance">entire books written</a> about the topic.</p>
+
+<p>Unsurprisingly, it&#8217;s also difficult to define when it comes to software.  However, most developers will readily agree that writing <a href="http://en.wikipedia.org/wiki/Unit_testing">unit tests</a> and practicing <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a> are tools for writing higher quality software.</p>
+
+<h3>Tests are great, why aren&#8217;t you writing them?</h3>
+
+<p>After a few laps on a recent project, I noticed that despite our &#8220;test-driven development&#8221; goals, our test coverage was lacking.  We were hoving around 50% lines/50% methods complete.</p>
+
+<p>After prodding our developers and &#8220;vowing to get better&#8221;, it wasn&#8217;t happening.  So I came up with a new plan.</p>
+
+<!--more-->
+
+
+<h3>The Test Coverage Game</h3>
+
+<p>We implemented a friendly game on the team to improve test coverage.</p>
+
+<ol>
+<li><p>Invent a scoring system to award &#8220;quality points&#8221; to developers.</p></li>
+<li><p>Display scores in public locations, but keep it lighthearted.</p></li>
+<li><p>A program collates the results and awards points to the team members after each build.</p></li>
+</ol>
+
+
+<p>We focused the scoring and made it simple:</p>
+
+<ul>
+<li>1 point for covering a line that was not previously covered by a unit test.</li>
+<li>3 points for covering a method that was not previously covered by a unit test.</li>
+<li>&lt; 50% is an F, 50% and higher is a C, 70% is a B, and 80% is an A.</li>
+</ul>
+
+
+<h4>Tools</h4>
+
+<ul>
+<li><a href="http://cobertura.sourceforge.net">Cobertura</a> to track code coverage.</li>
+<li><a href="http://www.hudson-ci.org">Hudson/Jenkins</a> for builds.</li>
+<li>A custom script to parse the coverage results (coming soon).</li>
+<li>A <em>whiteboard</em> for posting scores.</li>
+</ul>
+
+
+<h4>Does it work?</h4>
+
+<p>After one two-week lap, code coverage jumped from 50% to 60%. It continued to climb as developers strove to contribute and wanted their contributions to be visible to the public.</p>
+
+<p>Universally, it was welcomed by the team, and after a month, test coverage was at 70% &#8211; and developers enjoyed getting there.  It had a successful, nearly bug free launch, too.</p>
+
+<h3>Percentage-based scoring</h3>
+
+<p>Lines of code is a bad way to judge a developer&#8217;s effectiveness: removing lines of code is often a way to improve software quality.  So, a better scoring system would track percentages of the project that are covered by tests rather than lines of code.</p>
+
+<p>The key was <em>public visibility</em>. Developers strove to contribute tests when they knew their work was visible.</p>
+
+<p>Due to the success of the code coverage game, we decided to roll out a percentage-based scoring system across all software.  Give it a try, if you haven&#8217;t yet &#8211; something like it may be more effective than you think.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A software update is required.]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/26/a-software-update-is-required/"/>
+    <updated>2013-02-26T21:40:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/26/a-software-update-is-required</id>
+    <content type="html"><![CDATA[<p>My brother gave me <a href="http://us.gran-turismo.com/us/">Gran Turismo 5</a> for Christmas.  I&#8217;ve played all of the other GT games and loved them. GT5 had been out for awhile, but I was still excited to give it a try.</p>
+
+<p>I returned home from Christmas; after a few days, I finally had a free hour or two, so I booted up the PS3 and threw in the game.  And I was greeted by this:</p>
+
+<p><img src="http://asinesio.github.com/assets/2013-02-26/ps3-update.jpg" alt="The latest update data was found." /></p>
+
+<p><em>14 hours later</em>, the game finally finished updating and allowed me to play.  Too bad that I no longer had the free hour or two, so it took another week before I was able to actually play the game.</p>
+
+<p>It reminded me of this nefarious monstrosity:</p>
+
+<p><img src="http://asinesio.github.com/assets/2013-02-26/windows-update.png" alt="Windows Update restart nag" /></p>
+
+<p>&#8220;But, I don&#8217;t want to update <em>at all</em>,&#8221; I plead.</p>
+
+<p>The system scoffs. &#8220;Tough shit, buddy.  You&#8217;re going to have to deal with this now because I don&#8217;t value your time.&#8221;</p>
+
+<!--more-->
+
+
+<h4>This is the typical experience of today&#8217;s console gamer.</h4>
+
+<p>The advent of attached hard drives and broadband internet in consoles, without any software design, brought this ugliness from the PC to the living room.</p>
+
+<p>It&#8217;s so bad, in fact, that at Sony&#8217;s ill-advised PlayStation 4 news conference, they made sure to announce that <a href="http://www.mcvuk.com/news/read/ps4-to-have-background-firmware-updates/0111249">background firmware updates would be part of the new system.</a>  This was astounding because they did not even <em>show any games or an actual PlayStation 4</em> &#8211; but they mentioned background updates.</p>
+
+<p>This isn&#8217;t enough, though.  Updates also need to be <em>optional</em> and <em>taken at the user&#8217;s convenience</em>.</p>
+
+<h4>Will it matter?</h4>
+
+<p>The sad thing is that this is just a microcosm of the usability issues with console systems.  Others:</p>
+
+<ul>
+<li>Insanely long load times.</li>
+<li>A Herculean effort <em>just to type a password with a controller.</em></li>
+<li>Exclusive use of a television set.</li>
+<li>Expensive, silly, useless peripherals.</li>
+<li>Lack of downloadable and affordable games.</li>
+</ul>
+
+
+<p>I don&#8217;t see the next generation PlayStation addressing these issues.  Or the Xbox, for that matter.</p>
+
+<p>That&#8217;s why the iPad is the next generation console.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Perils of the Grails Searchable Plugin]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/"/>
+    <updated>2013-02-23T00:05:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin</id>
+    <content type="html"><![CDATA[<p>The <a href="http://grails.org/plugin/searchable">Grails Searchable Plugin</a> is generally where developers end up when they are looking to add full-text searching to their Grails application.</p>
+
+<p>It&#8217;s got a lot going for it:</p>
+
+<ul>
+<li>Simple, embedded Lucene index with minimal initial setup.</li>
+<li>Automatic GORM mirroring of changes.</li>
+<li>Widely used; according to Grails.org, it&#8217;s installed in almost <em>7% of Grails projects</em>.</li>
+<li>Fast and simple, it works out of the box.</li>
+</ul>
+
+
+<p>Before I go further: know that I really like the Searchable plugin.  It&#8217;s a great way to get search in a smaller application.</p>
+
+<!--more-->
+
+
+<h3>Adding Searchable to a Project: A dramatization</h3>
+
+<p>You&#8217;re working on a project.  The end of the lap is near, and your task is to implement a simple search screen.</p>
+
+<p>You find Searchable and decide to try it out.</p>
+
+<p>Installation&#8217;s easy. <code>grails install-plugin searchable</code> or <code>:searchable:0.6.4</code> in your BuildConfig.  Tweak some settings, and within an hour, you&#8217;ve got an embedded full text search engine.</p>
+
+<p>&#8220;Man, that&#8217;s cool,&#8221; you think to yourself.  &#8220;And so easy to use. I love it.&#8221;</p>
+
+<p>You proudly show it off to your project sponsors: &#8220;Look! Embedded Google, right in the app!  Look fast it is!&#8221;</p>
+
+<p>Everyone loves it. Your manager thinks you&#8217;re a rock star.  Life is great.</p>
+
+<p>Your QA team notices some searches randomly failing while testing the app, but you can&#8217;t reproduce it.  You research it for hours, can&#8217;t determine the cause, and eventually blame some random piece of infrastructure for your concerns.</p>
+
+<p>&#8220;I know the network guys were scheduled to do that switch firmware upgrade, that must have been it.&#8221;</p>
+
+<h4>Then, Production Deployment.</h4>
+
+<p>Your users are loving the full text search. Your app is a success and everyone pats you on the back.</p>
+
+<p>Meanwhile, your search index is adding rows by the minute as your database grows.  The random failure from QA is lurking there, in the shadows, planning the perfect moment to jump up and bite you.</p>
+
+<h4>Six months later&#8230;</h4>
+
+<p>&#8230;your app suddenly crashes, hard.  No data updates are happening &#8211; database transactions are timing out like crazy.  You frantically turn up logging and throw your full effort at debugging.  Since it&#8217;s a transaction timeout, you focus on the database.</p>
+
+<p>You&#8217;ve got your ops team, your DBAs, and your network team frantically checking to see what could be causing the issue.</p>
+
+<p>After hours of fruitless troubleshooting, you finally remember the bug that you ignored.  Now you see that the &#8220;random search problem&#8221; wasn&#8217;t random at all.</p>
+
+<p>Further research reveals that <em>storing the Compass index on an NFS mount</em> was the cause of the problem. It&#8217;s in the documentation.  While researching, you find:</p>
+
+<h5><em><a href="http://www.compass-project.org">Compass</a>, a core library used by Searchable, is no longer maintained.</em></h5>
+
+<p>You realize with surprise that the most popular search plugin for Grails uses an obsolete library to map GORM objects to it&#8217;s Lucene search index.</p>
+
+<p>The author has abandoned Compass and created <a href="http://www.elasticsearch.org">Elastic Search</a>, which, now that you look at it, looks to be a much better solution.</p>
+
+<h5><em>Nobody uses Searchable with indexes that are shared and mirrored across multiple app instances.</em></h5>
+
+<p>You weren&#8217;t a total idiot when you built your app &#8211; you decided to launch several Tomcat instances and load balance them.  In order for updates made in one node to show up in the others, you enabled mirroring in all nodes.</p>
+
+<p>What you didn&#8217;t realize is that in order to share the index files, you had to use something like an NFS mount to share them among instances.</p>
+
+<p>Then, suddenly, it hits you like a ton of bricks:</p>
+
+<h5><em>Tbe most popular Grails plugin for searching &#8211; Searchable &#8211; is great for a quick solution.  But it is not designed for scaling to multiple instances very well.</em></h5>
+
+<p>You start work porting the app to a different search technology &#8211; like <a href="http://lucene.apache.org/solr/">Apache Solr</a> or <a href="http://www.elasticsearch.org">Elastic Search</a> &#8211; and writing a <a href="http://asinesio.github.com/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/">blog post</a> to help prevent others from making the same mistake.</p>
+
+<h3>What did you learn?</h3>
+
+<ol>
+<li><p>Much like high school kids, the popular plugins are not necessarily the best plugins.</p></li>
+<li><p><em>Pay attention to what libraries are used by your dependencies before you choose them</em> or you may end up with dead-end software in your application.</p></li>
+<li><p>The simplest solution may not be the best solution.</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Powerful Admin Interfaces with Graphite and StatsD]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd/"/>
+    <updated>2013-02-19T22:02:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd</id>
+    <content type="html"><![CDATA[<p><a href="http://graphite.wikidot.com">Graphite</a> paired with <a href="http://github.com/etsy/statsd">StatsD</a> is a simple, powerful way to get dramatic insight into your application&#8217;s behavior.</p>
+
+<p>The seminal <a href="http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/">Etsy blog post</a> on this subject explains it well:</p>
+
+<blockquote><p>If Engineering at Etsy has a religion, it’s the Church of Graphs. If it moves, we track it. Sometimes we’ll draw a graph of something that isn’t moving yet, just in case it decides to make a run for it.</p><footer><strong>Ian Malpass, Etsy</strong> <cite><a href='http://codeascraft.etsy.com/2011/02/15/measure-anything-measure-everything/'>Measure Anything, Measure Everything</a></cite></footer></blockquote>
+
+
+<h4>With Graphite, you get:</h4>
+
+<ul>
+<li>Beautiful, near real-time graphs of metrics.</li>
+<li>A simply awesome API to embed graphs and source data in nearly any other system.</li>
+</ul>
+
+
+<h4>Combined with StatsD:</h4>
+
+<ul>
+<li>Fire-and-forget (UDP-based) metric data emission and aggregation.</li>
+<li>Metrics that make sense.</li>
+<li>Brain dead simple API that works in any language, from Groovy to shell scripts.</li>
+</ul>
+
+
+<h3>Knowledge is Power</h3>
+
+<p>What are the first items that get cut from most software projects?  <em>Effective support and administrative tools.</em></p>
+
+<p>Without easy tools at your disposal, how many times have you written some code and thought:</p>
+
+<blockquote><p>&#8220;What do I do if something goes wrong? Hmm, that&#8217;s hard. I guess I&#8217;ll just log the error for now.&#8221;</p></blockquote>
+
+
+<p>I&#8217;m certainly just as guilty of this transgression as anyone else.  Why would I waste valuable time writing a screen to manage the failures &#8211; something that may never be used?</p>
+
+<!--more-->
+
+
+<h3>A Simple Answer</h3>
+
+<p>What if the code was this simple:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">private</span> <span class="n">StatsDClient</span> <span class="n">statsdClient</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">doLogin</span><span class="o">(</span><span class="n">String</span> <span class="n">user</span><span class="o">,</span> <span class="n">String</span> <span class="n">pass</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="n">loginService</span><span class="o">.</span><span class="na">doLogin</span><span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">pass</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">(</span><span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">statsdClient</span><span class="o">.</span><span class="na">incrementCounter</span><span class="o">(</span><span class="s">&quot;login.success&quot;</span><span class="o">);</span>  <span class="c1">// Nice.</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">&quot;User &quot;</span> <span class="o">+</span> <span class="n">user</span> <span class="o">+</span> <span class="s">&quot; failed login.&quot;</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">statsdClient</span><span class="o">.</span><span class="na">incrementCounter</span><span class="o">(</span><span class="s">&quot;login.failed&quot;</span><span class="o">);</span>  <span class="c1">// Nefarious attempt? Not sure.</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Two additional lines of code (if you don&#8217;t count injecting the <code>statsdClient</code>) and all of a sudden you&#8217;ve got a incredibly useful graph like Etsy&#8217;s:</p>
+
+<p><img src="http://etsycodeascraft.files.wordpress.com/2011/02/logins2.png?w=500&amp;h=300" alt="Graph showing login failures" /></p>
+
+<p>When it&#8217;s that easy, <em>developers will use it by default.</em>  You won&#8217;t have to include tracking these things in project estimates, steering committees, and testing plans.  It will <em>just happen</em>.</p>
+
+<h3>Show off your graphs. Publicly.</h3>
+
+<p>Because Graphite has a <a href="https://graphite.readthedocs.org/en/latest/render_api.html">fantastic API</a>, all you need to do in order to show the number of failed logins in your admin interface is include a URL to Graphite&#8217;s render API in an <code>&lt;img&gt;</code> tag in your Admin interface.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://graphite.mycompany.com/render?target=stats.counts.login.success&amp;from=-6hours&amp;format=png&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With three lines of code, you&#8217;ve created a real time graph in your admin interface that shows login activity.</p>
+
+<p>Some other places that are great to show a graph:</p>
+
+<ul>
+<li>A large TV in your workspace.</li>
+<li>The app&#8217;s Wiki page and documentation.</li>
+<li>In an email to team members.</li>
+</ul>
+
+
+<p>When a key graph is shared like this, the entire team &#8211; developers, system admins, and support engineers &#8211; will use it.  After a time, they will find it indespensable &#8211; because it will make them more productive.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Your iPad app sucks.]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/15/your-ipad-app-sucks/"/>
+    <updated>2013-02-15T00:00:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/15/your-ipad-app-sucks</id>
+    <content type="html"><![CDATA[<p>Yeah. It&#8217;s harsh, but you know it&#8217;s true.  Your iPad app probably sucks &#8211; <em>when compared to your web site.</em></p>
+
+<p>Web browsing on an iPad is a blissful, unique, and sublime experience.  It is, in my estimation, the single greatest advancement in web browsing since the advent of <code>XMLHttpRequest</code>.</p>
+
+<p>On an iPad:</p>
+
+<ul>
+<li>Want to scroll? Grab the page and slide it over <em>like a piece of paper.</em></li>
+<li>Is the text too small or too large?  Stretch or pinch it <em>like silly putty.</em></li>
+<li>Want to do something special with a word on the page?  <em>Touch and hold.</em></li>
+</ul>
+
+
+<p>These interactions are so brilliant and obvious that it makes browsing almost any website &#8211; even this one &#8211; <em>fun</em>.</p>
+
+<!--more-->
+
+
+<p>Companies know this fact.  And they also know that:</p>
+
+<ul>
+<li>Visitors are <em>precious</em>.  The company has spent millions of dollars on their fancy web site to attract users like you.</li>
+<li>iPads are used for nearly <a href="http://appleinsider.com/articles/12/09/27/apple-ipad-dominates-tablet-based-web-browsing-with-98-share-report-says">all tablet web browsing</a>.</li>
+<li>iPad users are great customers &#8211; they&#8217;re generally <a href="http://www.nbcnews.com/technology/technolog/ipad-owners-trending-older-wealthier-now-157765">wealthy</a> and willing to spend money.</li>
+<li>Pop-up advertisements <a href="http://liesdamnedliesstatistics.com/2009/07/consumers-annoyed-with-internet-ads.html">annoy the hell</a> out of customers.</li>
+<li>First impressions are everything.</li>
+<li>The iPad app isn&#8217;t as functional as the full-fledged web site.</li>
+</ul>
+
+
+<p>Knowing this, companies still somehow decide to show their precious visitors this monstrosity (source: <a href="http://www.xkcd.com">XKCD</a>)</p>
+
+<p><img src="http://imgs.xkcd.com/comics/app.png" alt="XKCD coming showing a popover ad for an iPad app" /></p>
+
+<p>Maybe their iPad app is wonderful.  I&#8217;ll never know, though, because that ad &#8211; and by extension, the app &#8211; sucks.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Switching Grails Versions]]></title>
+    <link href="http://asinesio.github.com/blog/2013/02/13/switch-grails-versions/"/>
+    <updated>2013-02-13T00:00:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/02/13/switch-grails-versions</id>
+    <content type="html"><![CDATA[<p>This is my #firstpost, so I thought I&#8217;d share a useful Grails shell script.</p>
+
+<p>(<strong>Update: you really should use <a href="http://gvmtool.net">gvm</a> instead of this script.</strong> It is a similar idea but also handles installation, path setup, and other tools like Gradle, vert.x, and Griffon.)</p>
+
+<p>One of the annoying things about using <a href="http://www.grails.org">Grails</a> from the command line is dealing with multiple Grails versions on your system.</p>
+
+<p>This isn&#8217;t an issue if you&#8217;re using an IDE that can refer to a Grails version outside of your $PATH.  However, I find that using a command-line Grails in combination with an IDE like STS or GGTS is the most productive way for me to write Grails code.</p>
+
+<!--more-->
+
+
+<p>If you do nothing special, you&#8217;ll find yourself adding the following to your <code>~/.bash_profile</code>  to make Grails work from a command line:</p>
+
+<pre><code>GRAILS_HOME = /Users/asinesio/dev/tools/grails-2.1.0
+export PATH=$PATH:$GRAILS_HOME/bin
+</code></pre>
+
+<p>Of course, you now have to change your <code>.bash_profile</code> every time you switch projects. Fail.</p>
+
+<p>The obvious solution is a simple shell script that leverages the following ideas:</p>
+
+<ol>
+<li>Use a symbolic link from something like <code>/Users/asinesio/dev/tools/grails</code> to the actual Grails version you want to use.</li>
+<li>Set this link as <code>GRAILS_HOME</code>.</li>
+<li>Add <code>GRAILS_HOME/bin</code> to your <code>PATH</code>.</li>
+<li>Use a <a href="https://gist.github.com/asinesio/4946855">shell script</a> on your path to automatically change the symbolic link to point to the correct Grails version.</li>
+</ol>
+
+
+<p>Once you&#8217;ve done that, changing is as easy as running: <code>grails-switch-version.sh 2.2.0</code></p>
+
+<div><script src='https://gist.github.com/4946855.js?file=grails-switch-version.sh'></script>
+<noscript><pre><code>#!/bin/bash
+# This script will switch the active version of Grails.  Tested on Mac OS X 10.7 and 10.8. Read install directions first!
+# 
+# This software is copyright (c) 2012 Andy Sinesio. It's distributed under the MIT License: http://opensource.org/licenses/mit-license.php
+# 
+# Installation steps:
+#    - Make sure GRAILS_HOME is pointing at a symbolic link that points one of your actual grails installations.
+#       1) ln -s ~/dev/tools/grails-2.2.0 ~/dev/tools/grails
+#       2) Set GRAILS_HOME in ~/.bash_profile to be the symlink, e.g. ~/dev/tools/grails
+#    - Place this file in any directory (preferably on your PATH, e.g. ~/bin) with execute permissions
+#    - Change GRAILS_INSTALL_DIRS to the folder on your computer that has all of your downloaded Grails installs, if needed.
+#
+# Usage:  grails-switch-version.sh 2.1.0
+
+GRAILS_INSTALL_DIRS=&quot;$HOME/dev/tools&quot;
+GRAILS_DIR_PREFIX=&quot;grails-&quot;
+NEW_GRAILS_DIR=&quot;$GRAILS_INSTALL_DIRS/$GRAILS_DIR_PREFIX$1&quot;
+
+if [ -L &quot;$GRAILS_HOME&quot; ] &amp;&amp; [ -d &quot;$NEW_GRAILS_DIR&quot; ]; then
+        echo &quot;Removing existing symlink version of Grails at $GRAILS_HOME, linking to $NEW_GRAILS_DIR&quot;
+        rm $GRAILS_HOME
+        ln -s $NEW_GRAILS_DIR $GRAILS_HOME
+        $GRAILS_HOME/bin/grails --version
+else
+        echo &quot;Usage: grails-switch-version.sh &lt;&lt;VERSION_NUMBER&gt;&gt;, e.g. grails-switch-version.sh 2.2.0&quot;
+        echo &quot;Make sure that GRAILS_HOME ($GRAILS_HOME) is a symbolic link and grails versions are extracted in $GRAILS_INSTALL_DIRS&quot;
+fi</code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>

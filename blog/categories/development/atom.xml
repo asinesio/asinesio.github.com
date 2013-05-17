@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: development | Andy Sinesio]]></title>
+  <link href="http://asinesio.github.com/blog/categories/development/atom.xml" rel="self"/>
+  <link href="http://asinesio.github.com/"/>
+  <updated>2013-05-17T00:42:27-05:00</updated>
+  <id>http://asinesio.github.com/</id>
+  <author>
+    <name><![CDATA[Andy Sinesio]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Blink is not the coming of the apocalypse]]></title>
+    <link href="http://asinesio.github.com/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse/"/>
+    <updated>2013-04-05T00:54:00-05:00</updated>
+    <id>http://asinesio.github.com/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse</id>
+    <content type="html"><![CDATA[<p>Since Google <a href="http://blog.chromium.org/2013/04/blink-rendering-engine-for-chromium.html">announced they were forking WebKit</a>, I've seen nothing but <a href="http://prng.net/blink-faq.html">universally negative reactions</a>.</p>
+
+<p>The primary points seem to be that Blink is bad because:</p>
+
+<h4>"Developers will now have another major browser rendering engine that they will need to test."</h4>
+
+<p>This is just not true. If you're building quality web software, you are already testing your site on both Chrome and Safari (Mobile and desktop).</p>
+
+<p>A <a href="http://en.wikipedia.org/wiki/Internet_Explorer_6">web monoculture</a> is bad for everyone.  A healthy web ecosystem consisting of equal parts Chrome, Safari, Firefox, Opera, and Internet Explorer means that the users will have a choice, because all web apps will generally need to work with all browsers.</p>
+
+<h4>"WebKit and Blink will diverge and re-implement each other's features, thus slowing progress."</h4>
+
+<p>Google already <a href="https://news.ycombinator.com/item?id=5490242">wasn't contributing</a> much of their code back to WebKit.  The announcement of Blink is truly just formalizing what was already happening.</p>
+
+<h4>"Google is going to use this to invade my privacy and track me across the Web."</h4>
+
+<p>Yes. They were doing that anyway, and they haven't exactly had a great <a href="http://www.pcmag.com/article2/0,2817,2411916,00.asp">track record</a> of protecting your privacy. If you were concerned about this, you wouldn't be using Chrome anyway.</p>
+
+<p>Think about it; Google forked WebKit for the same reason Apple replaced Google Maps - Google wants to control their own destiny.</p>
+
+<p>Blink is not the coming of the web browser apocalypse (but it does have a terrible name).</p>
+
+<p>The apocalypse happened when Internet Explorer crushed Netscape. We've recovered from that, and we're never going back.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Gamification of Code Quality]]></title>
+    <link href="http://asinesio.github.com/blog/2013/03/05/gamification-of-code-quality/"/>
+    <updated>2013-03-05T20:35:00-06:00</updated>
+    <id>http://asinesio.github.com/blog/2013/03/05/gamification-of-code-quality</id>
+    <content type="html"><![CDATA[<p>Quality is one of the most difficult things to define.  There have been <a href="http://en.wikipedia.org/wiki/Zen_and_the_Art_of_Motorcycle_Maintenance">entire books written</a> about the topic.</p>
+
+<p>Unsurprisingly, it's also difficult to define when it comes to software.  However, most developers will readily agree that writing <a href="http://en.wikipedia.org/wiki/Unit_testing">unit tests</a> and practicing <a href="http://en.wikipedia.org/wiki/Test-driven_development">test-driven development</a> are tools for writing higher quality software.</p>
+
+<h3>Tests are great, why aren't you writing them?</h3>
+
+<p>After a few laps on a recent project, I noticed that despite our "test-driven development" goals, our test coverage was lacking.  We were hoving around 50% lines/50% methods complete.</p>
+
+<p>After prodding our developers and "vowing to get better", it wasn't happening.  So I came up with a new plan.</p>
+
+<!--more-->
+
+
+<h3>The Test Coverage Game</h3>
+
+<p>We implemented a friendly game on the team to improve test coverage.</p>
+
+<ol>
+<li><p>Invent a scoring system to award "quality points" to developers.</p></li>
+<li><p>Display scores in public locations, but keep it lighthearted.</p></li>
+<li><p>A program collates the results and awards points to the team members after each build.</p></li>
+</ol>
+
+
+<p>We focused the scoring and made it simple:</p>
+
+<ul>
+<li>1 point for covering a line that was not previously covered by a unit test.</li>
+<li>3 points for covering a method that was not previously covered by a unit test.</li>
+<li>&lt; 50% is an F, 50% and higher is a C, 70% is a B, and 80% is an A.</li>
+</ul>
+
+
+<h4>Tools</h4>
+
+<ul>
+<li><a href="http://cobertura.sourceforge.net">Cobertura</a> to track code coverage.</li>
+<li><a href="http://www.hudson-ci.org">Hudson/Jenkins</a> for builds.</li>
+<li>A custom script to parse the coverage results (coming soon).</li>
+<li>A <em>whiteboard</em> for posting scores.</li>
+</ul>
+
+
+<h4>Does it work?</h4>
+
+<p>After one two-week lap, code coverage jumped from 50% to 60%. It continued to climb as developers strove to contribute and wanted their contributions to be visible to the public.</p>
+
+<p>Universally, it was welcomed by the team, and after a month, test coverage was at 70% -- and developers enjoyed getting there.  It had a successful, nearly bug free launch, too.</p>
+
+<h3>Percentage-based scoring</h3>
+
+<p>Lines of code is a bad way to judge a developer's effectiveness: removing lines of code is often a way to improve software quality.  So, a better scoring system would track percentages of the project that are covered by tests rather than lines of code.</p>
+
+<p>The key was <em>public visibility</em>. Developers strove to contribute tests when they knew their work was visible.</p>
+
+<p>Due to the success of the code coverage game, we decided to roll out a percentage-based scoring system across all software.  Give it a try, if you haven't yet -- something like it may be more effective than you think.</p>
+]]></content>
+  </entry>
+  
+</feed>

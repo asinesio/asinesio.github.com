@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://asinesio.github.com/sitemap.xml 

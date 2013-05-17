@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Switching Grails Versions - Andy Sinesio</title>
+  <meta name="author" content="Andy Sinesio">
+
+  
+  <meta name="description" content="A small script to help Grails developers switch versions.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://asinesio.github.com/blog/2013/02/13/switch-grails-versions/">
+  <link rel="meta" type="application/rdf+xml" title="FOAF" href="/foaf.rdf" />
+  <link href="/favicon.png?v=2" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Andy Sinesio" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38496623-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Andy Sinesio</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:asinesio.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Switching Grails Versions</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-13T00:00:00-06:00" pubdate data-updated="true">Feb 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This is my #firstpost, so I thought I&#8217;d share a useful Grails shell script.</p>
+
+<p>(<strong>Update: you really should use <a href="http://gvmtool.net">gvm</a> instead of this script.</strong> It is a similar idea but also handles installation, path setup, and other tools like Gradle, vert.x, and Griffon.)</p>
+
+<p>One of the annoying things about using <a href="http://www.grails.org">Grails</a> from the command line is dealing with multiple Grails versions on your system.</p>
+
+<p>This isn&#8217;t an issue if you&#8217;re using an IDE that can refer to a Grails version outside of your $PATH.  However, I find that using a command-line Grails in combination with an IDE like STS or GGTS is the most productive way for me to write Grails code.</p>
+
+<!--more-->
+
+
+<p>If you do nothing special, you&#8217;ll find yourself adding the following to your <code>~/.bash_profile</code>  to make Grails work from a command line:</p>
+
+<pre><code>GRAILS_HOME = /Users/asinesio/dev/tools/grails-2.1.0
+export PATH=$PATH:$GRAILS_HOME/bin
+</code></pre>
+
+<p>Of course, you now have to change your <code>.bash_profile</code> every time you switch projects. Fail.</p>
+
+<p>The obvious solution is a simple shell script that leverages the following ideas:</p>
+
+<ol>
+<li>Use a symbolic link from something like <code>/Users/asinesio/dev/tools/grails</code> to the actual Grails version you want to use.</li>
+<li>Set this link as <code>GRAILS_HOME</code>.</li>
+<li>Add <code>GRAILS_HOME/bin</code> to your <code>PATH</code>.</li>
+<li>Use a <a href="https://gist.github.com/asinesio/4946855">shell script</a> on your path to automatically change the symbolic link to point to the correct Grails version.</li>
+</ol>
+
+
+<p>Once you&#8217;ve done that, changing is as easy as running: <code>grails-switch-version.sh 2.2.0</code></p>
+
+<div><script src='https://gist.github.com/4946855.js?file=grails-switch-version.sh'></script>
+<noscript><pre><code>#!/bin/bash
+# This script will switch the active version of Grails.  Tested on Mac OS X 10.7 and 10.8. Read install directions first!
+# 
+# This software is copyright (c) 2012 Andy Sinesio. It's distributed under the MIT License: http://opensource.org/licenses/mit-license.php
+# 
+# Installation steps:
+#    - Make sure GRAILS_HOME is pointing at a symbolic link that points one of your actual grails installations.
+#       1) ln -s ~/dev/tools/grails-2.2.0 ~/dev/tools/grails
+#       2) Set GRAILS_HOME in ~/.bash_profile to be the symlink, e.g. ~/dev/tools/grails
+#    - Place this file in any directory (preferably on your PATH, e.g. ~/bin) with execute permissions
+#    - Change GRAILS_INSTALL_DIRS to the folder on your computer that has all of your downloaded Grails installs, if needed.
+#
+# Usage:  grails-switch-version.sh 2.1.0
+
+GRAILS_INSTALL_DIRS=&quot;$HOME/dev/tools&quot;
+GRAILS_DIR_PREFIX=&quot;grails-&quot;
+NEW_GRAILS_DIR=&quot;$GRAILS_INSTALL_DIRS/$GRAILS_DIR_PREFIX$1&quot;
+
+if [ -L &quot;$GRAILS_HOME&quot; ] &amp;&amp; [ -d &quot;$NEW_GRAILS_DIR&quot; ]; then
+        echo &quot;Removing existing symlink version of Grails at $GRAILS_HOME, linking to $NEW_GRAILS_DIR&quot;
+        rm $GRAILS_HOME
+        ln -s $NEW_GRAILS_DIR $GRAILS_HOME
+        $GRAILS_HOME/bin/grails --version
+else
+        echo &quot;Usage: grails-switch-version.sh &lt;&lt;VERSION_NUMBER&gt;&gt;, e.g. grails-switch-version.sh 2.2.0&quot;
+        echo &quot;Make sure that GRAILS_HOME ($GRAILS_HOME) is a symbolic link and grails versions are extracted in $GRAILS_INSTALL_DIRS&quot;
+fi</code></pre></noscript></div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Andy Sinesio</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-13T00:00:00-06:00" pubdate data-updated="true">Feb 13<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/grails/'>grails</a>, <a class='category' href='/blog/categories/script/'>script</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://asinesio.github.com/blog/2013/02/13/switch-grails-versions/" data-via="asinesio" data-counturl="http://asinesio.github.com/blog/2013/02/13/switch-grails-versions/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/15/your-ipad-app-sucks/" title="Next Post: Your iPad app sucks.">Your iPad app sucks. &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse/">Blink is not the coming of the apocalypse</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/05/gamification-of-code-quality/">Gamification of Code Quality</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/26/a-software-update-is-required/">A software update is required.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/">The Perils of the Grails Searchable Plugin</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/19/powerful-admin-interfaces-with-graphite-and-statsd/">Powerful Admin Interfaces with Graphite and StatsD</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/asinesio">@asinesio</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'asinesio',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("asinesio", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/asinesio" class="twitter-follow-button" data-show-count="false">Follow @asinesio</a>
+  
+</section>
+
+
+
+<section class="googleplus googleplus-hidden">
+  <h1>
+    <a href="https://plus.google.com/109646729091839976697?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Andy Sinesio -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
