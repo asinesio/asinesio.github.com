@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>A software update is required. - Andy Sinesio</title>
+  <title>The Big Ball of Lights - Andy Sinesio</title>
   <meta name="author" content="Andy Sinesio">
 
   
-  <meta name="description" content="My brother gave me Gran Turismo 5 for Christmas. I&#8217;ve played all of the other GT games and loved them. GT5 had been out for awhile, but I was &hellip;">
+  <meta name="description" content="Year after year, your software grows. Developers are building new systems more quickly than old ones are retired. Eventually, if you don&#8217;t &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://asinesio.github.com/blog/2013/02/26/a-software-update-is-required/">
+  <link rel="canonical" href="http://asinesio.github.com/blog/2013/05/20/the-big-ball-of-lights/">
   <link rel="meta" type="application/rdf+xml" title="FOAF" href="/foaf.rdf" />
   <link href="/favicon.png?v=2" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">A Software Update Is Required.</h1>
+      <h1 class="entry-title">The Big Ball of Lights</h1>
     
     
       <p class="meta">
@@ -95,56 +95,93 @@
   
 
 
-<time datetime="2013-02-26T21:40:00-06:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
+<time datetime="2013-05-20T19:08:00-05:00" pubdate data-updated="true">May 20<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>My brother gave me <a href="http://us.gran-turismo.com/us/">Gran Turismo 5</a> for Christmas.  I&#8217;ve played all of the other GT games and loved them. GT5 had been out for awhile, but I was still excited to give it a try.</p>
+<div class="entry-content"><p>Year after year, your software grows. Developers are building new systems more quickly than old ones are retired.</p>
 
-<p>I returned home from Christmas; after a few days, I finally had a free hour or two, so I booted up the PS3 and threw in the game.  And I was greeted by this:</p>
+<p>Eventually, if you don&#8217;t periodically re-think your core architecture, your mix of services, queues, and applications will probably look like this:</p>
 
-<p><img src="/assets/2013-02-26/ps3-update.jpg" alt="The latest update data was found." /></p>
+<p><img src="/assets/2013-05-20/ball-of-lights.jpg" alt="Christmas Vacation Ball of Lights" /></p>
 
-<p><em>14 hours later</em>, the game finally finished updating and allowed me to play.  Too bad that I no longer had the free hour or two, so it took another week before I was able to actually play the game.</p>
+<p>Of course, you may not realize how tangled it really is until you decide to upgrade or migrate some key part of the infrastructure.</p>
 
-<p>It reminded me of this nefarious monstrosity:</p>
+<p>If you&#8217;re lucky, you may end up having this conversation <em>prior to deployment</em>:</p>
 
-<p><img src="/assets/2013-02-26/windows-update.png" alt="Windows Update restart nag" /></p>
+<p>You: <em>&#8220;So, we&#8217;re moving &#8216;Awesome Web Service&#8217; to a new API revision this weekend.&#8221;</em><br/>
+Developer: <em>&#8220;Cool. Did you notify Team Shadow?&#8221;</em><br/>
+You: <em>&#8220;No. Why would they care?&#8221;</em><br/>
+Developer: <em>&#8220;A few years ago, they needed some data from the &#8216;Awesome Web Service&#8217;, so they started using it. And they didn&#8217;t tell anybody.&#8221;</em></p>
 
-<p>&#8220;But, I don&#8217;t want to update <em>at all</em>,&#8221; I plead.</p>
+<p>When this occurs, you&#8217;ll be tempted to pull a Rusty Griswold and give up out of frustration. Next time, you should consider these approaches when you build your next great API.</p>
 
-<p>The system scoffs. &#8220;Tough shit, buddy.  You&#8217;re going to have to deal with this now because I don&#8217;t value your time.&#8221;</p>
-
-<!--more-->
-
-
-<h4>This is the typical experience of today&#8217;s console gamer.</h4>
-
-<p>The advent of attached hard drives and broadband internet in consoles, without any software design, brought this ugliness from the PC to the living room.</p>
-
-<p>It&#8217;s so bad, in fact, that at Sony&#8217;s ill-advised PlayStation 4 news conference, they made sure to announce that <a href="http://www.mcvuk.com/news/read/ps4-to-have-background-firmware-updates/0111249">background firmware updates would be part of the new system.</a>  This was astounding because they did not even <em>show any games or an actual PlayStation 4</em> &#8211; but they mentioned background updates.</p>
-
-<p>This isn&#8217;t enough, though.  Updates also need to be <em>optional</em> and <em>taken at the user&#8217;s convenience</em>.</p>
-
-<h4>Will it matter?</h4>
-
-<p>The sad thing is that this is just a microcosm of the usability issues with console systems.  Others:</p>
-
-<ul>
-<li>Insanely long load times.</li>
-<li>A Herculean effort <em>just to type a password with a controller.</em></li>
-<li>Exclusive use of a television set.</li>
-<li>Expensive, silly, useless peripherals.</li>
-<li>Lack of downloadable and affordable games.</li>
-</ul>
+<!-- more -->
 
 
-<p>I don&#8217;t see the next generation PlayStation addressing these issues.  Or the Xbox, for that matter.</p>
+<h2>Implement a Tracking Strategy.</h2>
 
-<p>That&#8217;s why the iPad is the next generation console.</p>
+<p>Plan for the scenario that someone is going to use your services <em>without your knowledge</em>.</p>
+
+<p>One strategy is to enforce every HTTP request to include tracking information in the HTTP headers. (For simple queries from web browsers, you can also allow the caller to pass them as query parameters or form data.)</p>
+
+<p>If you don&#8217;t want to implement a true authentication/authorization model, and don&#8217;t want to worry about validating accuracy, you can simply use a naming scheme like this:</p>
+
+<pre><code>X-MyCompany-CallingApplicationName: NeatApp
+X-MyCompany-CallingApplicationInstance: NeatApp-Customer-X
+X-MyCompany-CallingUser: bill@customer-x.com
+</code></pre>
+
+<p>(An API key scheme would also work.)</p>
+
+<h2>Enforce and Emit Tracking Data.</h2>
+
+<p>Once you&#8217;ve done this, you can route all requests through a reverse proxy or enterprise service bus to enforce this scheme on every HTTP request.</p>
+
+<p>If the fields are not there, the ESB can respond with a <code>400 Bad Request</code> code, thus enforcing your scheme.</p>
+
+<p>Once enforced, you can use several methods for tracking this information.</p>
+
+<h3>Basic: Log it.</h3>
+
+<p>You can set up your web server of choice to log the custom HTTP headers.  For Tomcat, here&#8217;s one example access log valve:</p>
+
+<pre><code>&lt;Valve
+    className="org.apache.catalina.valves.AccessLogValve"
+    directory="${catalina.base}/logs"
+    prefix="access"
+    fileDateFormat="yyyy-MM-dd.HH"
+    suffix=".log"
+    pattern="%h %l %u %t &amp;quot;%r&amp;quote; %s %b NAME:%{X-MyCompany-CallingApplicationName}i INSTANCE:%{X-MyCompany-CallingApplicationInstance}i USER:%{X-MyCompany-CallingUser}i"
+/&gt;
+</code></pre>
+
+<p>Parse the access.log, and you&#8217;ve got a way to tell who is calling your service.</p>
+
+<h3>Better: Emit to StatsD/Graphite.</h3>
+
+<p>The central enterprise service bus can emit the data via UDP to a <a href="http://codeascraft.com/2011/02/15/measure-anything-measure-everything/">StatsD/Graphite server</a> with a naming scheme that parses the UR and includes the calling app name and instance.</p>
+
+<p>For example: <code>services.{domain}.{callingAppName}.{callingAppInstance}</code></p>
+
+<p>This would give you a very quick and easy way to see which applications are calling which services in your infrastructure, and it would not interfere with your throughput or introduce unreliability since it&#8217;s using a <em>fire-and-forget</em> UDP packet.</p>
+
+<p>A simple metric of <code>stats.services.awesome-service.\*.\*</code> yields a dynamic graph that shows all clients of Awesome Service.</p>
+
+<p><img src="/assets/2013-05-20/graphite.png" alt="Graphite graph" /></p>
+
+<h3>Great: Map a Service Registry.</h3>
+
+<p>Once you have the data, you can use something like <a href="http://d3js.org">d3.js</a> to draw a <a href="http://www.findtheconversation.com/concept-map">map of all of your applications</a>.</p>
+
+<p>(You could plug it into your CMDB, if you have one, as well.)</p>
+
+<h2>Knowledge is power.</h2>
+
+<p>And with that bit of foresight, the big ball of lights isn&#8217;t intimidating. You can make your infrastructure changes with confidence because and you&#8217;ll know <em>exactly the impact</em> of a given change.</p>
 </div>
 
 
@@ -167,12 +204,12 @@
   
 
 
-<time datetime="2013-02-26T21:40:00-06:00" pubdate data-updated="true">Feb 26<span>th</span>, 2013</time>
+<time datetime="2013-05-20T19:08:00-05:00" pubdate data-updated="true">May 20<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/design/'>design</a>, <a class='category' href='/blog/categories/engineering/'>engineering</a>, <a class='category' href='/blog/categories/rant/'>rant</a>
+    <a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/graphite/'>graphite</a>, <a class='category' href='/blog/categories/rest/'>rest</a>
   
 </span>
 
@@ -181,7 +218,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://asinesio.github.com/blog/2013/02/26/a-software-update-is-required/" data-via="asinesio" data-counturl="http://asinesio.github.com/blog/2013/02/26/a-software-update-is-required/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://asinesio.github.com/blog/2013/05/20/the-big-ball-of-lights/" data-via="asinesio" data-counturl="http://asinesio.github.com/blog/2013/05/20/the-big-ball-of-lights/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -194,10 +231,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/02/23/the-perils-of-the-grails-searchable-plugin/" title="Previous Post: The Perils of the Grails Searchable Plugin">&laquo; The Perils of the Grails Searchable Plugin</a>
+        <a class="basic-alignment left" href="/blog/2013/04/05/blink-is-not-the-coming-of-the-apocalypse/" title="Previous Post: Blink is not the coming of the apocalypse">&laquo; Blink is not the coming of the apocalypse</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/03/05/gamification-of-code-quality/" title="Next Post: Gamification of Code Quality">Gamification of Code Quality &raquo;</a>
       
     </p>
   </footer>
