@@ -29,15 +29,15 @@ When this occurs, you'll be tempted to pull a Rusty Griswold and give up out of 
 
 Plan for the scenario that someone is going to use your services *without your knowledge*.  
 
-One strategy is to enforce every HTTP request to include tracking information in the HTTP headers. (For simple queries from web browsers, you can also allow the caller to pass them as query parameters or form data.)
+One strategy is to enforce that every HTTP request includes tracking information in the HTTP headers. (For simple queries from web browsers, you can also allow the caller to pass them as query parameters or form data.)
 
-If you don't want to implement a true authentication/authorization model, and don't want to worry about validating accuracy, you can simply use a naming scheme like this:
+If you don't want to implement a true authentication/authorization model, you can simply use a scheme like this:
 
 	X-MyCompany-CallingApplicationName: NeatApp
 	X-MyCompany-CallingApplicationInstance: NeatApp-Customer-X
 	X-MyCompany-CallingUser: bill@customer-x.com
 
-(An API key scheme would also work.)
+(An API key scheme would be preferable but more complicated; the tradeoff being that you can track users at a much finer grain.)
 
 ## Enforce and Emit Tracking Data.
 
@@ -66,11 +66,11 @@ Parse the access.log, and you've got a way to tell who is calling your service.
 	
 ### Better: Emit to StatsD/Graphite.
 
-The central enterprise service bus can emit the data via UDP to a [StatsD/Graphite server](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) with a naming scheme that parses the UR and includes the calling app name and instance.
+The central enterprise service bus can emit the data via UDP to a [StatsD/Graphite server](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) with a naming scheme that parses the URL and includes the calling app name and instance.
 
 For example: `services.{domain}.{callingAppName}.{callingAppInstance}`
 
-This would give you a very quick and easy way to see which applications are calling which services in your infrastructure, and it would not interfere with your throughput or introduce unreliability since it's using a *fire-and-forget* UDP packet.
+This would give you a very quick and easy way to see which applications are calling which services in your infrastructure; also, it would not interfere with throughput or introduce unreliability since it's using a fire-and-forget UDP packet.
 
 A simple metric of `stats.services.awesome-service.\*.\*` yields a dynamic graph that shows all clients of Awesome Service.
 
@@ -80,7 +80,7 @@ A simple metric of `stats.services.awesome-service.\*.\*` yields a dynamic graph
 
 Once you have the data, you can use something like [d3.js](http://d3js.org) to draw a [map of all of your applications](http://www.findtheconversation.com/concept-map).  
 
-(You could plug it into your CMDB, if you have one, as well.)
+(You could plug it into a CMDB, if you have one, as well.)
 
 ## Knowledge is power.
 
