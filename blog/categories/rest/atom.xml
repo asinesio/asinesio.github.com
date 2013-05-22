@@ -4,7 +4,7 @@
   <title><![CDATA[Category: rest | Andy Sinesio]]></title>
   <link href="http://asinesio.github.com/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://asinesio.github.com/"/>
-  <updated>2013-05-21T00:33:37-05:00</updated>
+  <updated>2013-05-21T19:12:51-05:00</updated>
   <id>http://asinesio.github.com/</id>
   <author>
     <name><![CDATA[Andy Sinesio]]></name>
@@ -20,7 +20,7 @@
     <id>http://asinesio.github.com/blog/2013/05/20/the-big-ball-of-lights</id>
     <content type="html"><![CDATA[<p>Year after year, your software grows. Developers are building new systems more quickly than old ones are retired.</p>
 
-<p>Eventually, if you don't periodically re-think your core architecture, your mix of services, queues, and applications will probably look like this:</p>
+<p>Eventually, your mix of services, queues, and applications will probably look like this:</p>
 
 <p><img src="/assets/2013-05-20/ball-of-lights.jpg" alt="Christmas Vacation Ball of Lights" /></p>
 
@@ -28,42 +28,41 @@
 
 <p>If you're lucky, you may end up having this conversation <em>prior to deployment</em>:</p>
 
-<p>You: <em>"So, we're moving 'Awesome Web Service' to a new API revision this weekend."</em><br/>
-Developer: <em>"Cool. Did you notify Team Shadow?"</em><br/>
-You: <em>"No. Why would they care?"</em><br/>
-Developer: <em>"A few years ago, they needed some data from the 'Awesome Web Service', so they started using it. And they didn't tell anybody."</em></p>
+<p><blockquote><p>You: "We're updating 'Awesome Web Service' to a new API revision this weekend."<br/>Developer: "Cool. Did you notify Team Clueless?"<br/>You: "No. Why would they care?"<br/>Developer: "Last year, they needed some data from the 'Awesome Web Service', so they started using it. And they didn't tell anybody and didn't update the documentation."</p></blockquote></p>
 
-<p>When this occurs, you'll be tempted to pull a Rusty Griswold and give up out of frustration. Next time, you should consider these approaches when you build your next great API.</p>
+<p>When this occurs, you'll be tempted, a la Rusty Griswold, to give up out of frustration.</p>
+
+<p>If you had thought to implement a basic HTTP call tracking strategy, this would not have happened!</p>
 
 <!-- more -->
 
 
-<h2>Implement a Tracking Strategy.</h2>
+<h2>Plan for Unexpected Use.</h2>
 
 <p>Plan for the scenario that someone is going to use your services <em>without your knowledge</em>.</p>
 
-<p>One strategy is to enforce every HTTP request to include tracking information in the HTTP headers. (For simple queries from web browsers, you can also allow the caller to pass them as query parameters or form data.)</p>
+<p>One strategy is to enforce that every HTTP request includes tracking information in the HTTP headers. (For simple queries from web browsers, you can also allow the caller to pass them as query parameters or form data.)</p>
 
-<p>If you don't want to implement a true authentication/authorization model, and don't want to worry about validating accuracy, you can simply use a naming scheme like this:</p>
+<p>If you don't want to implement a true authentication/authorization model, you can simply use a scheme like this:</p>
 
 <pre><code>X-MyCompany-CallingApplicationName: NeatApp
 X-MyCompany-CallingApplicationInstance: NeatApp-Customer-X
 X-MyCompany-CallingUser: bill@customer-x.com
 </code></pre>
 
-<p>(An API key scheme would also work.)</p>
+<p>(An API key scheme would be preferable but more complicated; the tradeoff being that you can track users at a much finer grain.)</p>
 
 <h2>Enforce and Emit Tracking Data.</h2>
 
 <p>Once you've done this, you can route all requests through a reverse proxy or enterprise service bus to enforce this scheme on every HTTP request.</p>
 
-<p>If the fields are not there, the ESB can respond with a <code>400 Bad Request</code> code, thus enforcing your scheme.</p>
+<p>If the fields are not there, the ESB can respond with a <code>400 Bad Request</code> or <code>403 Forbidden</code> response, thus enforcing your scheme.</p>
 
 <p>Once enforced, you can use several methods for tracking this information.</p>
 
-<h3>Basic: Log it.</h3>
+<h3>Step 1: Log it.</h3>
 
-<p>You can set up your web server of choice to log the custom HTTP headers.  For Tomcat, here's one example access log valve:</p>
+<p>This may seem obvious, but uou can set up your web server of choice to automatically log the custom HTTP headers. In Apache Tomcat, you configure an AccessLogValve like this:</p>
 
 <pre><code>&lt;Valve
     className="org.apache.catalina.valves.AccessLogValve"
@@ -75,29 +74,31 @@ X-MyCompany-CallingUser: bill@customer-x.com
 /&gt;
 </code></pre>
 
-<p>Parse the access.log, and you've got a way to tell who is calling your service.</p>
+<p>Parse the access log, and you can find out who is calling Awesome Service.</p>
 
-<h3>Better: Emit to StatsD/Graphite.</h3>
+<h3>Step 2: Emit to StatsD/Graphite.</h3>
 
-<p>The central enterprise service bus can emit the data via UDP to a <a href="http://codeascraft.com/2011/02/15/measure-anything-measure-everything/">StatsD/Graphite server</a> with a naming scheme that parses the UR and includes the calling app name and instance.</p>
+<p>The central enterprise service bus can emit the data via UDP to a <a href="http://codeascraft.com/2011/02/15/measure-anything-measure-everything/">StatsD/Graphite server</a> with a naming scheme that parses the URL and includes the calling app name and instance.</p>
 
 <p>For example: <code>services.{domain}.{callingAppName}.{callingAppInstance}</code></p>
 
-<p>This would give you a very quick and easy way to see which applications are calling which services in your infrastructure, and it would not interfere with your throughput or introduce unreliability since it's using a <em>fire-and-forget</em> UDP packet.</p>
+<p>This would give you a very quick and easy way to see which applications are calling which services in your infrastructure; also, it would not interfere with throughput or introduce unreliability since it's using a fire-and-forget UDP packet.</p>
 
 <p>A simple metric of <code>stats.services.awesome-service.\*.\*</code> yields a dynamic graph that shows all clients of Awesome Service.</p>
 
 <p><img src="/assets/2013-05-20/graphite.png" alt="Graphite graph" /></p>
 
-<h3>Great: Map a Service Registry.</h3>
+<h3>Step 3: Map a Service Registry.</h3>
 
 <p>Once you have the data, you can use something like <a href="http://d3js.org">d3.js</a> to draw a <a href="http://www.findtheconversation.com/concept-map">map of all of your applications</a>.</p>
 
-<p>(You could plug it into your CMDB, if you have one, as well.)</p>
+<p>(You could plug it into a CMDB, if you have one, as well.)</p>
 
 <h2>Knowledge is power.</h2>
 
-<p>And with that bit of foresight, the big ball of lights isn't intimidating. You can make your infrastructure changes with confidence because and you'll know <em>exactly the impact</em> of a given change.</p>
+<p>At this point, your graph of application dependencies is updated automatically as the web service is used.</p>
+
+<p>And, armed with this graph, the big ball of lights is just as tangled -- but at least you know where to look to get it unravelled.</p>
 ]]></content>
   </entry>
   
