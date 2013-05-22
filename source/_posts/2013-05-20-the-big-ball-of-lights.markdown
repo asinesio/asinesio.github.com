@@ -8,7 +8,7 @@ categories: ['development', 'rest', 'graphite']
 
 Year after year, your software grows. Developers are building new systems more quickly than old ones are retired.
 
-Eventually, if you don't periodically re-think your core architecture, your mix of services, queues, and applications will probably look like this:
+Eventually, your mix of services, queues, and applications will probably look like this:
 
 ![Christmas Vacation Ball of Lights](/assets/2013-05-20/ball-of-lights.jpg)
 
@@ -16,16 +16,20 @@ Of course, you may not realize how tangled it really is until you decide to upgr
 
 If you're lucky, you may end up having this conversation *prior to deployment*:
 
-You: *"So, we're moving 'Awesome Web Service' to a new API revision this weekend."*  
-Developer: *"Cool. Did you notify Team Shadow?"*  
-You: *"No. Why would they care?"*  
-Developer: *"A few years ago, they needed some data from the 'Awesome Web Service', so they started using it. And they didn't tell anybody."*
+{% blockquote %}
+You: "We're updating 'Awesome Web Service' to a new API revision this weekend."
+Developer: "Cool. Did you notify Team Clueless?"
+You: "No. Why would they care?" 
+Developer: "Last year, they needed some data from the 'Awesome Web Service', so they started using it. And they didn't tell anybody and didn't update the documentation."
+{% endblockquote %}
 
-When this occurs, you'll be tempted to pull a Rusty Griswold and give up out of frustration. Next time, you should consider these approaches when you build your next great API.
+When this occurs, you'll be tempted, a la Rusty Griswold, to give up out of frustration.  
+
+If you had thought to implement a basic HTTP call tracking strategy, this would not have happened!
 
 <!-- more -->
 
-## Implement a Tracking Strategy.
+## Plan for Unexpected Use.
 
 Plan for the scenario that someone is going to use your services *without your knowledge*.  
 
@@ -43,13 +47,13 @@ If you don't want to implement a true authentication/authorization model, you ca
 
 Once you've done this, you can route all requests through a reverse proxy or enterprise service bus to enforce this scheme on every HTTP request.
 
-If the fields are not there, the ESB can respond with a `400 Bad Request` code, thus enforcing your scheme. 
+If the fields are not there, the ESB can respond with a `400 Bad Request` or `403 Forbidden` response, thus enforcing your scheme. 
 
 Once enforced, you can use several methods for tracking this information. 
 
-### Basic: Log it.
+### Step 1: Log it.
 
-You can set up your web server of choice to log the custom HTTP headers.  For Tomcat, here's one example access log valve:
+This may seem obvious, but uou can set up your web server of choice to automatically log the custom HTTP headers. In Apache Tomcat, you configure an AccessLogValve like this:
 
 	<Valve
     	className="org.apache.catalina.valves.AccessLogValve"
@@ -60,11 +64,10 @@ You can set up your web server of choice to log the custom HTTP headers.  For To
     	pattern="%h %l %u %t &quot;%r&quote; %s %b NAME:%{X-MyCompany-CallingApplicationName}i INSTANCE:%{X-MyCompany-CallingApplicationInstance}i USER:%{X-MyCompany-CallingUser}i"
 	/>
 
-
-Parse the access.log, and you've got a way to tell who is calling your service.
+Parse the access log, and you can find out who is calling Awesome Service.
 
 	
-### Better: Emit to StatsD/Graphite.
+### Step 2: Emit to StatsD/Graphite.
 
 The central enterprise service bus can emit the data via UDP to a [StatsD/Graphite server](http://codeascraft.com/2011/02/15/measure-anything-measure-everything/) with a naming scheme that parses the URL and includes the calling app name and instance.
 
@@ -76,7 +79,7 @@ A simple metric of `stats.services.awesome-service.\*.\*` yields a dynamic graph
 
 ![Graphite graph](/assets/2013-05-20/graphite.png)
 
-### Great: Map a Service Registry.
+### Step 3: Map a Service Registry.
 
 Once you have the data, you can use something like [d3.js](http://d3js.org) to draw a [map of all of your applications](http://www.findtheconversation.com/concept-map).  
 
@@ -84,5 +87,6 @@ Once you have the data, you can use something like [d3.js](http://d3js.org) to d
 
 ## Knowledge is power.
 
-And with that bit of foresight, the big ball of lights isn't intimidating. You can make your infrastructure changes with confidence because and you'll know *exactly the impact* of a given change.
+At this point, your graph of application dependencies is updated automatically as the web service is used.
 
+And, armed with this graph, the big ball of lights is just as tangled -- but at least you know where to look to get it unravelled.
